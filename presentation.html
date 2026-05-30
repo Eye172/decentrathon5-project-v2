@@ -1,0 +1,1212 @@
+ <!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>inVision U — Pitch Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* ── Variables ── */
+  :root {
+    --acid: #D1FF00;
+    --cosmic: #050505;
+    --glass-bg: rgba(255,255,255,0.045);
+    --glass-border: rgba(255,255,255,0.09);
+    --blue: #6478FF;
+    --purple: #a78bfa;
+    --green: #34d399;
+    --sky: #60a5fa;
+    --orange: #fb923c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: var(--cosmic);
+    color: #fff;
+    font-family: 'Space Grotesk', sans-serif;
+    overflow: hidden;
+    user-select: none;
+  }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-thumb { background: rgba(209,255,0,0.2); border-radius: 2px; }
+
+  /* ── Keyframes ── */
+  @keyframes hudBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+  @keyframes meshFloat1 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(50px,-40px) scale(1.06)} 66%{transform:translate(-30px,60px) scale(0.94)} }
+  @keyframes meshFloat2 { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(-60px,50px) scale(1.08)} 66%{transform:translate(40px,-30px) scale(0.92)} }
+  @keyframes meshFloat3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,40px) scale(1.04)} }
+  @keyframes scanSweep { 0%{top:-2px;opacity:0} 4%{opacity:0.9} 96%{opacity:0.5} 100%{top:100%;opacity:0} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes glitch1 { 0%,100%{clip-path:inset(50% 0 30% 0);transform:translate(-3px,0)} 33%{clip-path:inset(10% 0 70% 0);transform:translate(3px,0)} 66%{clip-path:inset(80% 0 5% 0);transform:translate(-2px,1px)} }
+  @keyframes glitch2 { 0%,100%{clip-path:inset(30% 0 50% 0);transform:translate(3px,0)} 33%{clip-path:inset(70% 0 10% 0);transform:translate(-2px,0)} 66%{clip-path:inset(5% 0 80% 0);transform:translate(1px,-1px)} }
+  @keyframes scoreReveal { from{width:0} to{width:var(--w)} }
+  @keyframes radarDraw { from{stroke-dashoffset:1000} to{stroke-dashoffset:0} }
+  @keyframes slideIn { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
+  @keyframes slideOut { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(-40px)} }
+  @keyframes counterUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(209,255,0,0.4)} 50%{box-shadow:0 0 0 8px rgba(209,255,0,0)} }
+
+  /* ── Presentation wrapper ── */
+  #app {
+    width: 100vw; height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ── Mesh background ── */
+  .mesh-bg {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .mesh-blob {
+    position: absolute; border-radius: 50%; pointer-events: none; filter: blur(110px);
+  }
+  .mesh-blob-1 { width: 600px; height: 600px; top: -10%; left: -10%; background: radial-gradient(ellipse, rgba(209,255,0,0.055) 0%, transparent 70%); animation: meshFloat1 22s ease-in-out infinite; }
+  .mesh-blob-2 { width: 700px; height: 700px; top: 30%; right: -15%; background: radial-gradient(ellipse, rgba(100,120,255,0.045) 0%, transparent 70%); animation: meshFloat2 28s ease-in-out infinite; }
+  .mesh-blob-3 { width: 500px; height: 500px; bottom: -10%; left: 40%; background: radial-gradient(ellipse, rgba(167,139,250,0.035) 0%, transparent 70%); animation: meshFloat3 19s ease-in-out infinite; }
+
+  /* ── HUD grid ── */
+  .hud-grid {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image: linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+
+  /* ── Perspective grid ── */
+  .persp-grid {
+    position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+    width: 130%; height: 320px; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .persp-grid-inner {
+    position: absolute; bottom: -40px; left: -10%; width: 120%; height: 280%;
+    background-image: linear-gradient(rgba(209,255,0,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(209,255,0,0.08) 1px, transparent 1px);
+    background-size: 64px 64px;
+    transform: perspective(600px) rotateX(72deg) scaleX(1.1);
+    transform-origin: bottom center;
+    mask-image: radial-gradient(ellipse 75% 60% at 50% 100%, black 20%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 75% 60% at 50% 100%, black 20%, transparent 100%);
+  }
+  .persp-grid-glow {
+    position: absolute; bottom: 18%; left: 50%; transform: translateX(-50%);
+    width: 60%; height: 3px;
+    background: radial-gradient(ellipse at center, rgba(209,255,0,0.3), transparent 70%);
+    filter: blur(2px);
+  }
+
+  /* ── Scan line ── */
+  .scan-line {
+    position: fixed; left: 0; right: 0; height: 2px; z-index: 30; pointer-events: none;
+    background: linear-gradient(90deg, transparent 0%, rgba(209,255,0,0.55) 30%, rgba(209,255,0,0.8) 50%, rgba(209,255,0,0.55) 70%, transparent 100%);
+    filter: blur(0.5px); box-shadow: 0 0 12px rgba(209,255,0,0.4);
+    animation: scanSweep 2.8s linear infinite; animation-delay: 1.5s; top: 0;
+  }
+
+  /* ── Slide nav bar ── */
+  .nav-bar {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 8px; z-index: 100;
+  }
+  .nav-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.12);
+    cursor: pointer; transition: all 0.3s;
+  }
+  .nav-dot.active {
+    background: var(--acid); border-color: var(--acid);
+    box-shadow: 0 0 10px rgba(209,255,0,0.6);
+    width: 20px; border-radius: 3px;
+  }
+
+  /* ── Slide counter ── */
+  .slide-counter {
+    position: fixed; bottom: 28px; right: 36px; z-index: 100;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(255,255,255,0.25); letter-spacing: 0.1em;
+  }
+
+  /* ── Nav arrows ── */
+  .nav-arrow {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; z-index: 100; transition: all 0.2s; color: rgba(255,255,255,0.3);
+  }
+  .nav-arrow:hover { background: rgba(209,255,0,0.08); border-color: rgba(209,255,0,0.3); color: var(--acid); }
+  .nav-arrow.prev { left: 20px; }
+  .nav-arrow.next { right: 20px; }
+
+  /* ── Logo bar (top left) ── */
+  .logo-bar {
+    position: fixed; top: 20px; left: 28px; z-index: 100;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-box {
+    width: 32px; height: 32px; border-radius: 9px;
+    background: rgba(209,255,0,0.07); border: 1px solid rgba(209,255,0,0.18);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 900; color: var(--acid);
+  }
+  .logo-name {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.18em; color: rgba(255,255,255,0.28); text-transform: uppercase;
+  }
+
+  /* ── Status online (top right) ── */
+  .status-bar {
+    position: fixed; top: 20px; right: 28px; z-index: 100;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .status-dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--acid); box-shadow: 0 0 8px rgba(209,255,0,0.6);
+    animation: hudBlink 1.4s step-end infinite;
+  }
+  .status-text {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(255,255,255,0.25); letter-spacing: 0.12em;
+  }
+
+  /* ── Slides container ── */
+  .slides-wrap {
+    position: relative; z-index: 10; width: 100%; height: 100%;
+  }
+
+  /* ── Single slide ── */
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 80px 60px 80px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    transform: translateX(30px);
+  }
+  .slide.active {
+    opacity: 1; pointer-events: all; transform: translateX(0);
+  }
+  .slide.exit {
+    opacity: 0; transform: translateX(-30px);
+  }
+
+  /* ── Glass card ── */
+  .glass-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px);
+    border-radius: 18px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s;
+  }
+  .glass-card:hover {
+    background: rgba(255,255,255,0.075);
+    border-color: rgba(209,255,0,0.22);
+    box-shadow: 0 0 40px rgba(209,255,0,0.06);
+    transform: translateY(-2px);
+  }
+
+  /* ── HUD corners ── */
+  .hud-tl, .hud-tr, .hud-bl, .hud-br {
+    position: absolute; width: 10px; height: 10px; pointer-events: none;
+  }
+  .hud-tl { top: 8px; left: 8px; border-top: 1.5px solid rgba(209,255,0,0.5); border-left: 1.5px solid rgba(209,255,0,0.5); }
+  .hud-tr { top: 8px; right: 8px; border-top: 1.5px solid rgba(209,255,0,0.5); border-right: 1.5px solid rgba(209,255,0,0.5); }
+  .hud-bl { bottom: 8px; left: 8px; border-bottom: 1.5px solid rgba(209,255,0,0.5); border-left: 1.5px solid rgba(209,255,0,0.5); }
+  .hud-br { bottom: 8px; right: 8px; border-bottom: 1.5px solid rgba(209,255,0,0.5); border-right: 1.5px solid rgba(209,255,0,0.5); }
+
+  /* ── Typography ── */
+  .slide-title {
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900; letter-spacing: -0.04em; line-height: 1;
+    color: rgba(255,255,255,0.88);
+  }
+  .slide-title .accent { color: var(--acid); text-shadow: 0 0 40px rgba(209,255,0,0.35); }
+  .mono-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.18em; color: rgba(255,255,255,0.28); text-transform: uppercase;
+  }
+  .section-divider {
+    display: flex; align-items: center; gap: 14px; width: 100%;
+    margin-bottom: 20px;
+  }
+  .section-divider-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08));
+  }
+  .section-divider-line.r {
+    background: linear-gradient(90deg, rgba(255,255,255,0.08), transparent);
+  }
+
+  /* ── Slide 1 — Title ── */
+  .s1-content { text-align: left; max-width: 900px; width: 100%; }
+  .s1-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 14px 5px 8px; border-radius: 100px;
+    background: rgba(209,255,0,0.06); border: 1px solid rgba(209,255,0,0.22);
+    margin-bottom: 24px;
+  }
+  .s1-badge-icon {
+    width: 20px; height: 20px; border-radius: 6px;
+    background: rgba(209,255,0,0.12); border: 1px solid rgba(209,255,0,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 8px; font-weight: 900; color: var(--acid);
+  }
+  .s1-badge-text { color: var(--acid); font-size: 13px; font-weight: 700; letter-spacing: 0.07em; }
+  .s1-title-line1 {
+    font-size: clamp(3.2rem, 9vw, 7rem); font-weight: 900; letter-spacing: -0.04em;
+    color: rgba(255,255,255,0.78); line-height: 1; margin-bottom: 0.06em;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.9);
+  }
+  .s1-title-line2 {
+    font-size: clamp(3.2rem, 9vw, 7rem); font-weight: 900; letter-spacing: -0.04em;
+    color: var(--acid); line-height: 1; margin-bottom: 0.2em;
+    text-shadow: 0 0 60px rgba(209,255,0,0.4), 0 0 120px rgba(209,255,0,0.18), 1px 1px 0 rgba(209,255,0,0.55), 2px 2px 0 rgba(209,255,0,0.38), 3px 3px 0 rgba(209,255,0,0.22);
+    position: relative;
+  }
+  .s1-title-line2 .glitch-layer1 {
+    position: absolute; inset: 0; color: cyan; pointer-events: none;
+    clip-path: polygon(0 20%, 100% 20%, 100% 42%, 0 42%);
+    animation: glitch1 0.15s steps(1) infinite; animation-delay: 3s; animation-iteration-count: 3;
+  }
+  .s1-title-line2 .glitch-layer2 {
+    position: absolute; inset: 0; color: magenta; pointer-events: none;
+    clip-path: polygon(0 58%, 100% 58%, 100% 80%, 0 80%);
+    animation: glitch2 0.18s steps(1) infinite; animation-delay: 3.05s; animation-iteration-count: 3;
+  }
+  .s1-tagline {
+    color: rgba(255,255,255,0.38); font-size: 15px; max-width: 500px; line-height: 1.65; margin-bottom: 32px;
+  }
+  .s1-stats { display: flex; gap: 40px; margin-bottom: 36px; }
+  .s1-stat-val {
+    font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 900; line-height: 1;
+  }
+  .s1-stat-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.28); letter-spacing: 0.1em; margin-top: 4px; }
+  .s1-bottom { display: flex; align-items: center; gap: 20px; }
+  .s1-hack-badge {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 14px; border-radius: 8px;
+    background: rgba(100,120,255,0.07); border: 1px solid rgba(100,120,255,0.2);
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    color: rgba(100,120,255,0.8); letter-spacing: 0.1em;
+  }
+  .s1-hack-dot { width: 5px; height: 5px; border-radius: 50%; background: #6478FF; }
+
+  /* ── Slide 2 — Problem ── */
+  .s2-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 900px; width: 100%; }
+  .problem-card {
+    padding: 24px; border-radius: 16px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    position: relative; overflow: hidden;
+  }
+  .problem-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(239,68,68,0.4), transparent);
+  }
+  .problem-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    color: rgba(239,68,68,0.6); letter-spacing: 0.1em; margin-bottom: 10px;
+  }
+  .problem-title { font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.85); margin-bottom: 8px; }
+  .problem-desc { font-size: 12px; color: rgba(255,255,255,0.38); line-height: 1.6; }
+
+  /* ── Slide 3 — Solution ── */
+  .funnel-steps { display: flex; align-items: center; gap: 0; max-width: 900px; width: 100%; }
+  .funnel-step {
+    flex: 1; padding: 18px 16px; text-align: center;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+    position: relative;
+  }
+  .funnel-step:first-child { border-radius: 14px 0 0 14px; }
+  .funnel-step:last-child { border-radius: 0 14px 14px 0; }
+  .funnel-step:not(:last-child) { border-right: none; }
+  .funnel-step-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    color: rgba(209,255,0,0.45); letter-spacing: 0.12em; margin-bottom: 8px;
+  }
+  .funnel-step-icon { font-size: 22px; margin-bottom: 8px; }
+  .funnel-step-name { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.82); margin-bottom: 4px; }
+  .funnel-step-sub { font-size: 10px; color: rgba(255,255,255,0.3); line-height: 1.4; }
+  .funnel-arrow {
+    color: rgba(209,255,0,0.35); font-size: 16px; flex-shrink: 0;
+    margin: 0 -1px; z-index: 1;
+  }
+
+  /* ── Slide 4 — Anonymity ── */
+  .anon-big {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 700;
+    color: var(--acid); letter-spacing: 0.1em;
+    text-shadow: 0 0 40px rgba(209,255,0,0.5), 0 0 80px rgba(209,255,0,0.2);
+    margin: 20px 0;
+  }
+  .anon-vs { display: grid; grid-template-columns: 1fr 48px 1fr; gap: 0; max-width: 800px; width: 100%; align-items: center; }
+  .anon-col {
+    padding: 20px 24px; border-radius: 14px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+  }
+  .anon-col.bad { border-color: rgba(239,68,68,0.2); background: rgba(239,68,68,0.04); }
+  .anon-col.good { border-color: rgba(209,255,0,0.2); background: rgba(209,255,0,0.04); }
+  .anon-col-label { font-size: 10px; letter-spacing: 0.12em; font-family: 'JetBrains Mono', monospace; margin-bottom: 12px; }
+  .anon-col.bad .anon-col-label { color: rgba(239,68,68,0.6); }
+  .anon-col.good .anon-col-label { color: rgba(209,255,0,0.6); }
+  .anon-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+  .anon-row:last-child { margin-bottom: 0; }
+  .anon-cross { color: rgba(239,68,68,0.7); font-size: 14px; }
+  .anon-check { color: var(--acid); font-size: 14px; }
+  .vs-circle {
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.04); display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.4); margin: 0 auto;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Slide 5 — Scoring ── */
+  .scoring-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 900px; width: 100%; }
+  .radar-wrap { display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .score-bars { padding: 24px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); }
+  .score-row { margin-bottom: 16px; }
+  .score-row:last-child { margin-bottom: 0; }
+  .score-row-top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .score-name { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.7); }
+  .score-pct { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .score-track { height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+  .score-fill { height: 100%; border-radius: 2px; width: var(--w); animation: scoreReveal 1.4s ease forwards; }
+  .dual-engine { display: flex; gap: 10px; margin-top: 16px; }
+  .engine-badge {
+    flex: 1; padding: 10px 14px; border-radius: 10px; text-align: center;
+    border: 1px solid;
+  }
+  .engine-badge.ai { background: rgba(167,139,250,0.06); border-color: rgba(167,139,250,0.2); }
+  .engine-badge.rule { background: rgba(96,165,250,0.06); border-color: rgba(96,165,250,0.2); }
+  .engine-name { font-size: 11px; font-weight: 700; margin-bottom: 3px; }
+  .engine-badge.ai .engine-name { color: var(--purple); }
+  .engine-badge.rule .engine-name { color: var(--sky); }
+  .engine-desc { font-size: 10px; color: rgba(255,255,255,0.35); font-family: 'JetBrains Mono', monospace; }
+
+  /* ── Slide 6 — Commission UI ── */
+  .ui-mock { max-width: 900px; width: 100%; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.09); background: rgba(5,5,5,0.85); }
+  .ui-mock-header { padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; align-items: center; justify-content: space-between; }
+  .ui-mock-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.8); }
+  .ui-filters { display: flex; gap: 6px; }
+  .ui-filter {
+    padding: 4px 10px; border-radius: 6px; font-size: 10px; font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.45); cursor: pointer;
+  }
+  .ui-filter.active { background: rgba(209,255,0,0.08); border-color: rgba(209,255,0,0.25); color: var(--acid); }
+  .ui-mock-body { display: grid; grid-template-columns: 1fr 1.4fr; }
+  .ui-list { border-right: 1px solid rgba(255,255,255,0.06); }
+  .ui-list-item { padding: 12px 20px; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; align-items: center; gap: 12px; cursor: pointer; transition: background 0.2s; }
+  .ui-list-item:hover { background: rgba(255,255,255,0.03); }
+  .ui-list-item.selected { background: rgba(209,255,0,0.04); border-left: 2px solid rgba(209,255,0,0.4); }
+  .ui-anon-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--acid); letter-spacing: 0.08em; }
+  .ui-score-num { font-size: 13px; font-weight: 800; margin-left: auto; }
+  .ui-tag { padding: 2px 7px; border-radius: 4px; font-size: 9px; font-family: 'JetBrains Mono', monospace; }
+  .ui-tag.done { background: rgba(52,211,153,0.1); color: #34d399; border: 1px solid rgba(52,211,153,0.2); }
+  .ui-tag.pend { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+  .ui-tag.ai { background: rgba(239,68,68,0.1); color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+  .ui-detail { padding: 16px 20px; }
+  .ui-detail-id { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--acid); margin-bottom: 10px; }
+  .ui-detail-radar { display: flex; justify-content: center; margin: 8px 0; }
+  .ui-detail-recommend {
+    padding: 10px 14px; border-radius: 10px; margin-top: 10px;
+    background: rgba(209,255,0,0.06); border: 1px solid rgba(209,255,0,0.18);
+    font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.5;
+  }
+  .ui-recommend-label { font-size: 9px; font-family: 'JetBrains Mono', monospace; color: var(--acid); letter-spacing: 0.1em; margin-bottom: 4px; }
+
+  /* ── Slide 7 — Stack ── */
+  .stack-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; max-width: 800px; width: 100%; }
+  .stack-card {
+    padding: 20px; border-radius: 14px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    position: relative; overflow: hidden;
+  }
+  .stack-card-accent { position: absolute; top: 0; left: 0; right: 0; height: 2px; border-radius: 14px 14px 0 0; }
+  .stack-layer { font-size: 9px; letter-spacing: 0.15em; font-family: 'JetBrains Mono', monospace; margin-bottom: 10px; }
+  .stack-name { font-size: 15px; font-weight: 800; margin-bottom: 6px; }
+  .stack-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .stack-tag {
+    padding: 3px 8px; border-radius: 5px; font-size: 10px; font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.55);
+  }
+  .lang-flags { display: flex; gap: 8px; margin-top: 16px; }
+  .lang-badge {
+    padding: 4px 10px; border-radius: 6px; font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    background: rgba(209,255,0,0.06); border: 1px solid rgba(209,255,0,0.18); color: var(--acid);
+  }
+
+  /* ── Slide 8 — Architecture ── */
+  .arch-diagram { display: flex; flex-direction: column; align-items: center; gap: 0; max-width: 700px; width: 100%; }
+  .arch-row { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; }
+  .arch-box {
+    padding: 12px 20px; border-radius: 12px; text-align: center; min-width: 120px;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+  }
+  .arch-box.candidate { border-color: rgba(209,255,0,0.25); background: rgba(209,255,0,0.05); }
+  .arch-box.frontend { border-color: rgba(96,165,250,0.25); background: rgba(96,165,250,0.05); }
+  .arch-box.backend { border-color: rgba(167,139,250,0.25); background: rgba(167,139,250,0.05); }
+  .arch-box.db { border-color: rgba(52,211,153,0.25); background: rgba(52,211,153,0.05); }
+  .arch-box.claude { border-color: rgba(251,146,60,0.25); background: rgba(251,146,60,0.05); }
+  .arch-box-label { font-size: 9px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.1em; margin-bottom: 4px; opacity: 0.5; }
+  .arch-box-name { font-size: 13px; font-weight: 800; }
+  .arch-box.candidate .arch-box-name { color: var(--acid); }
+  .arch-box.frontend .arch-box-name { color: var(--sky); }
+  .arch-box.backend .arch-box-name { color: var(--purple); }
+  .arch-box.db .arch-box-name { color: var(--green); }
+  .arch-box.claude .arch-box-name { color: var(--orange); }
+  .arch-arrow { color: rgba(255,255,255,0.2); font-size: 20px; flex-shrink: 0; }
+  .arch-arrow-v { color: rgba(255,255,255,0.2); font-size: 20px; text-align: center; height: 30px; display: flex; align-items: center; justify-content: center; }
+  .arch-claude-row { display: flex; gap: 12px; margin-top: 0; }
+  .arch-sub {
+    padding: 10px 16px; border-radius: 10px; text-align: center; min-width: 110px;
+    border: 1px dashed rgba(251,146,60,0.2); background: rgba(251,146,60,0.03);
+    font-size: 10px; color: rgba(251,146,60,0.7); font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em;
+  }
+  .arch-vline { width: 1px; height: 28px; background: rgba(255,255,255,0.1); margin: 0 auto; }
+
+  /* ── Slide 9 — Unique features ── */
+  .unique-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 900px; width: 100%; }
+  .unique-card {
+    padding: 18px; border-radius: 14px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+    position: relative; overflow: hidden; transition: all 0.25s;
+  }
+  .unique-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--card-color, rgba(255,255,255,0.15));
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .unique-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--card-color, rgba(255,255,255,0.2)), transparent);
+    opacity: 0.6;
+  }
+  .unique-icon { font-size: 24px; margin-bottom: 10px; }
+  .unique-name { font-size: 13px; font-weight: 800; color: rgba(255,255,255,0.85); margin-bottom: 6px; }
+  .unique-desc { font-size: 11px; color: rgba(255,255,255,0.35); line-height: 1.55; }
+
+  /* ── Slide: Pipeline / API table ── */
+  .pipeline-grid { display: grid; grid-template-columns: 52px 1fr; gap: 10px 16px; max-width: 820px; width: 100%; font-size: 12px; align-items: start; }
+  .pipeline-step-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--acid);
+    padding-top: 2px;
+  }
+  .pipeline-step-desc { color: rgba(255,255,255,0.68); line-height: 1.55; }
+  .pipeline-step-desc code {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.32);
+  }
+  .triple-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 20px; }
+  @media (max-width: 720px) { .triple-row { grid-template-columns: 1fr; } }
+  .mini-panel {
+    padding: 14px 16px; border-radius: 12px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+  }
+  .mini-panel-label {
+    font-size: 9px; font-family: 'JetBrains Mono', monospace; color: rgba(255,255,255,0.3);
+    letter-spacing: 0.12em; margin-bottom: 6px;
+  }
+  .mini-panel-body { font-size: 11px; color: rgba(255,255,255,0.52); line-height: 1.55; }
+
+  .api-mod-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 900px; width: 100%; }
+  .api-mod-card {
+    padding: 14px 16px; border-radius: 12px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+    text-align: left;
+  }
+  .api-mod-file { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--purple); margin-bottom: 6px; }
+  .api-mod-desc { font-size: 11px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+
+  /* ── Slide 10 — Final ── */
+  .s10-content { text-align: center; max-width: 800px; width: 100%; }
+  .s10-quote {
+    font-size: clamp(1.6rem, 4vw, 2.8rem); font-weight: 900; letter-spacing: -0.03em;
+    line-height: 1.2; margin: 24px 0;
+    color: rgba(255,255,255,0.85);
+  }
+  .s10-quote span { color: var(--acid); }
+  .roadmap-row { display: flex; gap: 12px; margin-top: 24px; }
+  .roadmap-item {
+    flex: 1; padding: 16px; border-radius: 12px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+    text-align: left;
+  }
+  .roadmap-status {
+    font-size: 9px; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.12em; margin-bottom: 8px;
+  }
+  .roadmap-status.now { color: var(--acid); }
+  .roadmap-status.next { color: var(--blue); }
+  .roadmap-item-title { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.8); margin-bottom: 6px; }
+  .roadmap-item-desc { font-size: 11px; color: rgba(255,255,255,0.35); line-height: 1.5; }
+
+  /* ── Animations when slide becomes active ── */
+  .slide.active .fade-up-1 { animation: fadeUp 0.5s ease 0.1s both; }
+  .slide.active .fade-up-2 { animation: fadeUp 0.5s ease 0.2s both; }
+  .slide.active .fade-up-3 { animation: fadeUp 0.5s ease 0.3s both; }
+  .slide.active .fade-up-4 { animation: fadeUp 0.5s ease 0.4s both; }
+  .slide.active .fade-up-5 { animation: fadeUp 0.5s ease 0.5s both; }
+  .slide.active .fade-up-6 { animation: fadeUp 0.5s ease 0.6s both; }
+
+  .tz-check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 900px; width: 100%; }
+  @media (max-width: 800px) { .tz-check-grid { grid-template-columns: 1fr; } }
+  .tz-check-item {
+    padding: 12px 14px; border-radius: 12px; text-align: left;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+    font-size: 11px; color: rgba(255,255,255,0.48); line-height: 1.5;
+  }
+  .tz-check-item strong { color: rgba(255,255,255,0.82); font-weight: 700; }
+  .deadline-row {
+    display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px;
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+    margin-bottom: 8px; font-size: 12px;
+  }
+  .deadline-when { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--acid); min-width: 140px; }
+  .process-flow-v {
+    display: flex; flex-direction: column; gap: 8px; max-width: 820px; width: 100%; margin-top: 8px;
+  }
+  .process-step {
+    display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start;
+    padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.06);
+  }
+  .process-num { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--acid); padding-top: 2px; }
+  .process-body { font-size: 12px; color: rgba(255,255,255,0.55); line-height: 1.55; }
+  .process-body code { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: rgba(255,255,255,0.28); }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- Background layers -->
+  <div class="mesh-bg">
+    <div class="mesh-blob mesh-blob-1"></div>
+    <div class="mesh-blob mesh-blob-2"></div>
+    <div class="mesh-blob mesh-blob-3"></div>
+  </div>
+  <div class="hud-grid"></div>
+  <div class="persp-grid">
+    <div class="persp-grid-inner"></div>
+    <div class="persp-grid-glow"></div>
+  </div>
+  <div class="scan-line"></div>
+
+  <!-- Fixed UI chrome -->
+  <div class="logo-bar">
+    <div class="logo-box">iU</div>
+    <span class="logo-name">inVision U</span>
+  </div>
+  <div class="status-bar">
+    <div class="status-dot"></div>
+    <span class="status-text">SYSTEM ONLINE</span>
+  </div>
+  <button class="nav-arrow prev" onclick="prevSlide()">&#8592;</button>
+  <button class="nav-arrow next" onclick="nextSlide()">&#8594;</button>
+  <div class="nav-bar" id="navBar"></div>
+  <div class="slide-counter" id="slideCounter"></div>
+
+  <!-- ═══════════════════════════════════════════════════ SLIDES ═══ -->
+  <div class="slides-wrap" id="slidesWrap">
+
+    <!-- ─── SLIDE 1: TITLE ─── -->
+    <div class="slide" data-slide="0">
+      <div class="s1-content">
+        <div class="s1-badge fade-up-1">
+          <div class="s1-badge-icon">iU</div>
+          <span class="s1-badge-text">inVision U</span>
+        </div>
+        <div class="fade-up-2" style="font-size:12px;letter-spacing:0.14em;color:rgba(255,255,255,0.32);margin-bottom:14px;text-transform:uppercase">Система отбора кандидатов · приёмная комиссия</div>
+        <div class="s1-title-line1 fade-up-2">DEEP TECH</div>
+        <div class="s1-title-line2 fade-up-3">
+          SELECTION
+          <div class="glitch-layer1">SELECTION</div>
+          <div class="glitch-layer2">SELECTION</div>
+        </div>
+        <div class="s1-tagline fade-up-4">
+          Не просто балл: у комиссии — <strong style="color:rgba(209,255,0,0.9)">глубокий разбор человека по осям</strong> (путь, устойчивость, лидерство, мотивация, аутентичность, детектор, интервью), затем <strong style="color:rgba(255,255,255,0.55)">общий вердикт и рекомендация</strong>. Сбор данных: live-интервью с <strong style="color:rgba(255,255,255,0.55)">взглядом и голосом</strong>, AI-детектор текстов, <strong style="color:rgba(255,255,255,0.55)">анонимный просмотр</strong> · <strong style="color:var(--acid)">решение за людьми</strong>.
+        </div>
+        <div class="s1-stats fade-up-5" style="flex-wrap:wrap">
+          <div>
+            <div class="s1-stat-val" style="color:var(--acid)">100</div>
+            <div class="s1-stat-label">БАЛЛОВ (ШКАЛА)</div>
+          </div>
+          <div>
+            <div class="s1-stat-val" style="color:var(--purple)">5</div>
+            <div class="s1-stat-label">КРИТЕРИЕВ</div>
+          </div>
+          <div>
+            <div class="s1-stat-val" style="color:var(--sky)">≤4</div>
+            <div class="s1-stat-label">ВОПРОСОВ AI</div>
+          </div>
+          <div>
+            <div class="s1-stat-val" style="color:var(--green)">3</div>
+            <div class="s1-stat-label">ЯЗЫКА (EN/RU/KZ)</div>
+          </div>
+        </div>
+        <div class="s1-bottom fade-up-6">
+          <div class="s1-hack-badge">
+            <div class="s1-hack-dot"></div>
+            DECENTRATHON 5.0
+          </div>
+          <div class="s1-hack-badge" style="border-color:rgba(209,255,0,0.2);background:rgba(209,255,0,0.06);color:rgba(209,255,0,0.8)">
+            <div class="s1-hack-dot" style="background:var(--acid)"></div>
+            AI INDRIVE TRACK
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SLIDE 2: PROBLEM ─── -->
+    <div class="slide" data-slide="1">
+      <div style="max-width:900px;width:100%">
+        <div class="section-divider fade-up-1">
+          <div class="section-divider-line"></div>
+          <span class="mono-label">01 / ПРОБЛЕМА</span>
+          <div class="section-divider-line r"></div>
+        </div>
+        <div class="slide-title fade-up-2" style="margin-bottom:8px">Традиционный отбор</div>
+        <div class="slide-title fade-up-2"><span class="accent">сломан</span></div>
+        <div style="height:24px"></div>
+        <div class="s2-grid fade-up-3">
+          <div class="problem-card">
+            <div class="problem-num">ERR_01</div>
+            <div class="problem-title">Ручная обработка</div>
+            <div class="problem-desc">Комиссия просматривает сотни анкет вручную — это медленно, дорого и субъективно.</div>
+          </div>
+          <div class="problem-card">
+            <div class="problem-num">ERR_02</div>
+            <div class="problem-title">Предвзятость</div>
+            <div class="problem-desc">Имя, школа и регион кандидата неосознанно влияют на решение эксперта.</div>
+          </div>
+          <div class="problem-card">
+            <div class="problem-num">ERR_03</div>
+            <div class="problem-title">Нет единых критериев</div>
+            <div class="problem-desc">Каждый член комиссии оценивает по своей шкале — результаты несравнимы.</div>
+          </div>
+          <div class="problem-card">
+            <div class="problem-num">ERR_04</div>
+            <div class="problem-title">Нет объяснимости</div>
+            <div class="problem-desc">Кандидат не понимает почему получил отказ. Комиссия не может обосновать решение.</div>
+          </div>
+          <div class="problem-card" style="grid-column:1 / -1;max-width:100%">
+            <div class="problem-num">ERR_05</div>
+            <div class="problem-title">Риск «идеальных» эссе и накруток</div>
+            <div class="problem-desc">Генеративный AI упрощает подачу «гладкого» текста без глубины; без эвристик и контекста интервью сложнее отличить стиль кандидата от шаблона.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SLIDE 3: SOLUTION ─── -->
+    <div class="slide" data-slide="2">
+      <div style="max-width:900px;width:100%">
+        <div class="section-divider fade-up-1">
+          <div class="section-divider-line"></div>
+          <span class="mono-label">02 / РЕШЕНИЕ</span>
+          <div class="section-divider-line r"></div>
+        </div>
+        <div class="slide-title fade-up-2">Путь кандидата в <span class="accent">продукте</span></div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.36);margin-top:10px;margin-bottom:20px;max-width:820px;line-height:1.55" class="fade-up-2">Регистрация и JWT → страница <code style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(209,255,0,0.45)">/apply</code> (несколько подшагов) → <code style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(209,255,0,0.45)">/interview</code> → <code style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(209,255,0,0.45)">/done</code>.</div>
+        <div class="funnel-steps fade-up-3">
+          <div class="funnel-step">
+            <div class="funnel-step-num">STEP 01</div>
+            <div class="funnel-step-icon">📋</div>
+            <div class="funnel-step-name">Профиль</div>
+            <div class="funnel-step-sub">Анкета, онбординг</div>
+          </div>
+          <div class="funnel-arrow">›</div>
+          <div class="funnel-step">
+            <div class="funnel-step-num">STEP 02</div>
+            <div class="funnel-step-icon">🗺️</div>
+            <div class="funnel-step-name">Life Map + эссе</div>
+            <div class="funnel-step-sub">Таймлайн · мотивация</div>
+          </div>
+          <div class="funnel-arrow">›</div>
+          <div class="funnel-step">
+            <div class="funnel-step-num">STEP 03</div>
+            <div class="funnel-step-icon">🧩</div>
+            <div class="funnel-step-name">SJT</div>
+            <div class="funnel-step-sub">Ситуативное суждение</div>
+          </div>
+          <div class="funnel-arrow">›</div>
+          <div class="funnel-step" style="border-color:rgba(209,255,0,0.2);background:rgba(209,255,0,0.04)">
+            <div class="funnel-step-num">STEP 04</div>
+            <div class="funnel-step-icon">🤖</div>
+            <div class="funnel-step-name">AI-интервью</div>
+            <div class="funnel-step-sub">Live: камера · взгляд · до 4 вопросов · голос</div>
+          </div>
+        </div>
+        <div style="margin-top:24px;display:flex;gap:16px;flex-wrap:wrap" class="fade-up-4">
+          <div style="flex:1;min-width:260px;padding:16px 20px;border-radius:14px;background:rgba(52,211,153,0.05);border:1px solid rgba(52,211,153,0.18)">
+            <div style="font-size:9px;font-family:'JetBrains Mono',monospace;color:rgba(52,211,153,0.7);letter-spacing:0.12em;margin-bottom:8px">КОМИССИЯ — ДОСЬЕ КАНДИДАТА</div>
+            <div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.6">По <strong style="color:rgba(209,255,0,0.85)">anonymous_id</strong> — <strong>7 вкладок</strong>: обзор с радаром и итогом / углублённо путь (Life Map) / резилиентность / лидерство / мотивация / AI-детектор / транскрипт интервью. Сначала <strong>детальный разбор по каждой характеристике</strong> (подбаллы, текстовые выводы агентов, визуализации), затем <strong>сводка и общая рекомендация</strong>. Плюс веса в настройках и сравнение с <strong style="color:rgba(96,165,250,0.9)">baseline</strong>.</div>
+          </div>
+          <div style="flex:0 0 auto;min-width:200px;padding:16px 20px;border-radius:14px;background:rgba(209,255,0,0.05);border:1px solid rgba(209,255,0,0.18);display:flex;align-items:center;gap:10px">
+            <div style="font-size:28px">⚡</div>
+            <div>
+              <div style="font-size:11px;color:var(--acid);font-weight:700;margin-bottom:4px">Фоновый скоринг</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.4)">После последнего ответа — задача в очереди, обновление профиля в SQLite</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SLIDE 4: AI + LIVE (для жюри) ─── -->
+    <div class="slide" data-slide="3">
+      <div style="max-width:920px;width:100%">
+        <div class="section-divider fade-up-1">
+          <div class="section-divider-line"></div>
+          <span class="mono-label">03 / ИИ И ДАННЫЕ КАНДИДАТА</span>
+          <div class="section-divider-line r"></div>
+        </div>
+        <div class="slide-title fade-up-2" style="margin-bottom:10px">Многомодальный <span class="accent">разбор</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.34);margin-bottom:12px;line-height:1.5;max-width:800px" class="fade-up-2">Цель — снизить обход через ChatGPT: <strong style="color:rgba(255,255,255,0.65)">глаза и лицо</strong> ловят зачитывание с экрана, <strong style="color:rgba(255,255,255,0.65)">текст</strong> — «слишком гладкий» AI-стиль в эссе и в ответах.</div>
+        <div class="process-flow-v fade-up-3" style="margin-bottom:14px">
+          <div class="process-step">
+            <div class="process-num">1</div>
+            <div class="process-body"><strong style="color:#fff">Эссе и тексты</strong> — <strong style="color:var(--acid)">AI-детектор</strong> и эвристики по мотивационному письму; отдельно API <code style="font-size:9px">/api/analyze</code> для разбора произвольного текста. Это <strong>сигнал для комиссии</strong>, не автоматический отказ.</div>
+          </div>
+          <div class="process-step">
+            <div class="process-num">2</div>
+            <div class="process-body"><strong style="color:#fff">SJT + анкета · Life Map</strong> — структурированные и ситуативные ответы; идут в общий профиль для скоринга.</div>
+          </div>
+          <div class="process-step">
+            <div class="process-num">3</div>
+            <div class="process-body"><strong style="color:#fff">Live-интервью + мультиагентный скоринг</strong> — до 4 вопросов, транскрипты (Whisper). Бэкенд гоняет пайплайн <code style="font-size:9px">invision_ai_core</code>: отдельные смысловые блоки (путь, психология/устойчивость и мотивация, лидерство, оркестратор) — как в промптах <code style="font-size:9px">backend/prompts/</code>. На выходе — структурированный JSON для UI: по каждой оси свои метрики и текст, затем <strong style="color:var(--acid)">executive summary</strong> и балл из 100.</div>
+          </div>
+        </div>
+        <div class="triple-row fade-up-4">
+          <div class="mini-panel" style="border-color:rgba(209,255,0,0.18)">
+            <div class="mini-panel-label" style="color:var(--acid)">ВИДЕО</div>
+            <div class="mini-panel-body">Непрерывная запись сессии (WebM), превью ~720p. Поведенческий отчёт по лицу передаётся на бэкенд вместе с интервью.</div>
+          </div>
+          <div class="mini-panel" style="border-color:rgba(96,165,250,0.2)">
+            <div class="mini-panel-label" style="color:var(--sky)">ВЗГЛЯД · ПРОТИВ «ЧТЕНИЯ С ИИ»</div>
+            <div class="mini-panel-body"><strong>MediaPipe</strong> каждые 500 мс: направление взгляда, <strong>саккады</strong> (типичные паттерны при переводе взгляда на <strong>второй монитор / телефон / шпаргалку</strong>), контакт с камерой, синхронизация <strong>рта и речи</strong>. Комиссия видит метрики и текстовые выводы — чтобы отличить импровизацию от зачитывания готового текста.</div>
+          </div>
+          <div class="mini-panel" style="border-color:rgba(167,139,250,0.2)">
+            <div class="mini-panel-label" style="color:var(--purple)">ГОЛОС + ДЕТЕКТОР</div>
+            <div class="mini-panel-body">Ответы только голосом (15 с подготовки, до 120 с на ответ). Озвучка вопросов (TTS) не даёт «прочитать параллельно» с тем же текстом на экране. После сессии — скоринг + baseline и <strong>сводный сигнал по эссе и всем транскриптам</strong> для честности отбора.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SLIDE 5: ANONYMITY ─── -->
+    <div class="slide" data-slide="4">
+      <div style="max-width:860px;width:100%;text-align:center">
+        <div class="section-divider fade-up-1">
+          <div class="section-divider-line"></div>
+          <span class="mono-label">04 / АНОНИМНОСТЬ</span>
+          <div class="section-divider-line r"></div>
+        </div>
+        <div class="slide-title fade-up-2">Анонимно, но <span class="accent">глубоко</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.32);margin:10px auto 6px;max-width:520px;line-height:1.5">Без имени и школы — зато полный XAI-разбор: те же вкладки, радар, транскрипты и поведение в кадре.</div>
+        <div class="anon-big fade-up-3">KZ-4X9F2A</div>
+        <div class="anon-vs fade-up-4">
+          <div class="anon-col bad">
+            <div class="anon-col-label">❌ ОБЫЧНЫЙ ОТБОР</div>
+            <div class="anon-row"><span class="anon-cross">✗</span><span style="font-size:12px;color:rgba(255,255,255,0.55)">Имя и фамилия</span></div>
+            <div class="anon-row"><span class="anon-cross">✗</span><span style="font-size:12px;color:rgba(255,255,255,0.55)">Школа и город</span></div>
+            <div class="anon-row"><span class="anon-cross">✗</span><span style="font-size:12px;color:rgba(255,255,255,0.55)">Социальный статус</span></div>
+            <div class="anon-row"><span class="anon-cross">✗</span><span style="font-size:12px;color:rgba(255,255,255,0.55)">Предвзятость эксперта</span></div>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:center"><div class="vs-circle">VS</div></div>
+          <div class="anon-col good">
+            <div class="anon-col-label">✓ inVision U</div>
+            <div class="anon-row"><span class="anon-check">✓</span><span style="font-size:12px;color:rgba(255,255,255,0.7)">Анонимный ID</span></div>
+            <div class="anon-row"><span class="anon-check">✓</span><span style="font-size:12px;color:rgba(255,255,255,0.7)">Только содержание</span></div>
+            <div class="anon-row"><span class="anon-check">✓</span><span style="font-size:12px;color:rgba(255,255,255,0.7)">Чистые данные</span></div>
+            <div class="anon-row"><span class="anon-check">✓</span><span style="font-size:12px;color:rgba(255,255,255,0.7)">Human-in-the-loop</span></div>
+          </div>
+        </div>
+        <div style="margin-top:20px;padding:12px 20px;border-radius:12px;background:rgba(209,255,0,0.05);border:1px solid rgba(209,255,0,0.15);display:inline-block" class="fade-up-5">
+          <span style="font-size:13px;color:rgba(255,255,255,0.6)">"</span>
+          <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8)">AI помогает — </span>
+          <span style="font-size:13px;font-weight:800;color:var(--acid)">человек решает</span>
+          <span style="font-size:13px;color:rgba(255,255,255,0.6)">"</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SLIDE 6: AI SCORING ─── -->
+    <div class="slide" data-slide="5">
+      <div style="max-width:900px;width:100%">
+        <div class="section-divider fade-up-1">
+          <div class="section-divider-line"></div>
+          <span class="mono-label">05 / СКОРИНГ</span>
+          <div class="section-divider-line r"></div>
+        </div>
+        <div class="slide-title fade-up-2">Сначала оси, потом <span class="accent">вердикт</span></div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.36);margin:12px 0 18px;max-width:820px;line-height:1.55">Модель не выдаёт один «чёрный» балл: для каждой компетенции считаются <strong style="color:rgba(255,255,255,0.55)">вклад в общую формулу</strong> и показываются <strong style="color:rgba(209,255,0,0.8)">объяснения</strong> — диалектика по пути, «гора» резилиентности, профиль лидера, анализ мотивации (SDT), карта аутентичности. В конце — <strong style="color:#fff">краткий executive summary</strong>, итог <strong>из 100</strong> и рекомендация (recommend / review / reject). Рядом для честности — <strong style="color:var(--sky)">rule-based baseline</strong>. Веса осей комиссия задаёт в настройках (сумма 100%).</div>
+        <div style="height:6px"></div>
+        <div class="scoring-wrap fade-up-3">
+          <div class="radar-wrap glass-card" style="padding:20px">
+            <div class="hud-tl"></div><div class="hud-tr"></div><div class="hud-bl"></div><div class="hud-br"></div>
+            <svg width="220" height="220" viewBox="0 0 220 220">
+              <!-- Background rings -->
+              <polygon points="110,30 175,72 175,148 110,190 45,148 45,72" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <polygon points="110,50 163,84 163,136 110,170 57,136 57,84" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <polygon points="110,70 151,96 151,124 110,150 69,124 69,96" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <polygon points="110,90 139,108 139,112 110,130 81,112 81,108" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+              <!-- Axis lines -->
+              <line x1="110" y1="30" x2="110" y2="190" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <line x1="45" y1="72" x2="175" y2="148" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <line x1="175" y1="72" x2="45" y2="148" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+              <!-- AI data polygon -->
+              <polygon points="110,46 171,79 170,134 110,178 50,134 50,82"
+                fill="rgba(209,255,0,0.12)" stroke="rgba(209,255,0,0.7)" stroke-width="1.5"
+                stroke-dasharray="1000" stroke-dashoffset="0"
+                style="animation:radarDraw 1.5s ease 0.5s both"/>
+              <!-- Data points -->
+              <circle cx="110" cy="46" r="3" fill="var(--acid)"/>
+              <circle cx="171" cy="79" r="3" fill="var(--acid)"/>
+              <circle cx="170" cy="134" r="3" fill="var(--acid)"/>
+              <circle cx="110" cy="178" r="3" fill="var(--acid)"/>
+              <circle cx="50" cy="134" r="3" fill="var(--acid)"/>
+              <circle cx="50" cy="82" r="3" fill="var(--acid)"/>
+              <!-- Labels -->
+              <text x="110" y="22" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="JetBrains Mono">ЛИДЕРСТВО</text>
+              <text x="188" y="68" text-anchor="start" fill="rgba(255,255,255,0.5)" font-size="9" font-family="JetBrains Mono">МОТИВ.</text>
+              <text x="188" y="155" text-anchor="start" fill="rgba(255,255,255,0.5)" font-size="8" font-family="JetBrains Mono">РЕЗИЛ.</text>
+              <text x="110" y="202" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="9" font-family="JetBrains Mono">АУТЕНТ.</text>
+              <text x="26" y="155" text-anchor="end" fill="rgba(255,255,255,0.5)" font-size="9" font-family="JetBrains Mono">ТРАЕКТ.</text>
+            </svg>
+          </div>
+          <div>
+            <div class="score-bars">
+              <div class="score-row">
+                <div class="score-row-top"><span class="score-name">Лидерство (макс. 25)</span><span class="score-pct" style="color:var(--acid)">25%</span></div>
+                <div class="score-track"><div class="score-fill" style="--w:88%;background:linear-gradient(90deg,rgba(209,255,0,0.8),var(--acid))"></div></div>
+              </div>
+              <div class="score-row">
+                <div class="score-row-top"><span class="score-name">Мотивация (макс. 25)</span><span class="score-pct" style="color:var(--purple)">25%</span></div>
+                <div class="score-track"><div class="score-fill" style="--w:78%;background:linear-gradient(90deg,rgba(167,139,250,0.8),var(--purple))"></div></div>
+              </div>
+              <div class="score-row">
+                <div class="score-row-top"><span class="score-name">Путь / траектория (макс. 25)</span><span class="score-pct" style="color:var(--sky)">25%</span></div>
+                <div class="score-track"><div class="score-fill" style="--w:92%;background:linear-gradient(90deg,rgba(96,165,250,0.8),var(--sky))"></div></div>
+              </div>
+              <div class="score-row">
+                <div class="score-row-top"><span class="score-name">Устойчивость (макс. 15)</span><span class="score-pct" style="color:var(--green)">15%</span></div>
+                <div class="score-track"><div class="score-fill" style="--w:72%;background:linear-gradient(90deg,rgba(52,211,153,0.8),var(--green))"></div></div>
+              </div>
+              <div class="score-row">
+                <div class="score-row-top"><span class="score-name">Аутентичность (макс. 10)</span><span class="score-pct" style="color:var(--orange)">10%</span></div>
+                <div class="score-track"><div class="score-fill" style="--w:65%;background:linear-gradient(90deg,rgba(251,146,60,0.8),var(--orange))"></div></div>
+              </div>
+            </div>
+            <div class="dual-engine" style="margin-top:12px">
+              <div class="engine-badge ai">
+                <div class="engine-name">Claude · XAI</div>
+                <div class="engine-desc">Агенты по осям + сводка</div>
+              </div>
+              <div class="engine-badge rule">
+                <div class="engine-name">Rule-based</div>
+                <div class="engine-desc">Прозрачная формула</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SLIDE 7: COMMISSION ─── -->
+    <div class="slide" data-slide="6">
+      <div style="max-width:900px;width:100%">
+        <div class="section-divider fade-up-1">
+          <div class="section-divider-line"></div>
+          <span class="mono-label">06 / КОМИССИЯ</span>
+          <div class="section-divider-line r"></div>
+        </div>
+        <div class="slide-title fade-up-2" style="margin-bottom:8px">Досье: <span class="accent">сначала детали</span>, потом итог</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.32);margin-bottom:10px;max-width:860px;line-height:1.55">В карточке кандидата комиссия проходит <strong style="color:rgba(255,255,255,0.55)">каждую характеристику отдельно</strong> — со своими подбаллами, графиками и текстовыми вердиктами модулей; на вкладке «Обзор» сводятся <strong style="color:var(--acid)">радар компетенций</strong>, аутентичность, live-метрики лица, затем <strong style="color:#fff">общий AI-summary и рекомендация</strong>. Есть комментарий комиссии, подтверждение просмотра и пересчёт оценки.</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;max-width:860px;justify-content:center" class="fade-up-2">
+          <span style="padding:4px 10px;border-radius:6px;font-size:9px;font-family:'JetBrains Mono',monospace;background:rgba(209,255,0,0.12);border:1px solid rgba(209,255,0,0.28);color:var(--acid)">ОБЗОР</span>
+          <span style="padding:4px 10px;border-radius:6px;font-size:9px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45)">ПУТЬ</span>
+          <span style="padding:4px 10px;border-radius:6px;font-size:9px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45)">РЕЗИЛИЕНТНОСТЬ</span>
+          <span style="padding:4px 10px;border-radius:6px;font-size:9px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45)">ЛИДЕРСТВО</span>
+          <span style="padding:4px 10px;border-radius:6px;font-size:9px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45)">МОТИВАЦИЯ</span>
+          <span style="padding:4px 10px;border-radius:6px;font-size:9px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45)">ДЕТЕКТОР</span>
+          <span style="padding:4px 10px;border-radius:6px;font-size:9px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45)">ТРАНСКРИПТ</span>
+        </div>
+        <div class="ui-mock fade-up-3">
+          <div class="ui-mock-header">
+            <span class="ui-mock-title">Candidate Dashboard</span>
+            <div class="ui-filters">
+              <div class="ui-filter active">ВСЕ</div>
+              <div class="ui-filter">ЗАВЕРШЁННЫЕ</div>
+              <div class="ui-filter">НА ПРОВЕРКЕ</div>
+              <div class="ui-filter">AI SUSPICION</div>
+            </div>
+          </div>
+          <div class="ui-mock-body">
+            <div class="ui-list">
+              <div class="ui-list-item selected">
+                <div>
+                  <div class="ui-anon-id">KZ-4X9F2A</div>
+                  <div class="ui-tag done">SCORED</div>
+                </div>
+                <div class="ui-score-num" style="color:var(--acid)">87</div>
+              </div>
+              <div class="ui-list-item">
+                <div>
+                  <div class="ui-anon-id">KZ-7B3E1C</div>
+                  <div class="ui-tag done">SCORED</div>
+                </div>
+                <div class="ui-score-num" style="color:var(--green)">74</div>
+              </div>
+              <div class="ui-list-item">
+                <div>
+                  <div class="ui-anon-id">KZ-2M8R5K</div>
+                  <div class="ui-tag pend">PENDING</div>
+                </div>
+                <div class="ui-score-num" style="color:rgba(255,255,255,0.3)">—</div>
+              </div>
+              <div class="ui-list-item">
+                <div>
+                  <div class="ui-anon-id">KZ-9Q1P7N</div>
+                  <div class="ui-tag ai">AI DETECTED</div>
+                </div>
+                <div class="ui-score-num" style="color:var(--purple)">62</div>
+              </div>
+              <div class="ui-list-item">
+                <div>
+                  <div class="ui-anon-id">KZ-6H4D0W</div>
+                  <div class="ui-tag done">SCORED</div>
+                </div>
+                <div class="ui-score-num" style="color:var(--sky)">91</div>
+              </div>
+            </div>
+            <div class="ui-detail">
+              <div class="ui-detail-id">● KZ-4X9F2A &nbsp;·&nbsp; SCORE: 87 / 100</div>
+              <div class="ui-detail-radar">
+                <svg width="130" height="130" viewBox="0 0 130 130">
+                  <polygon points="65,10 108,37 108,93 65,120 22,93 22,37" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                  <polygon points="65,25 96,44 96,86 65,105 34,86 34,44" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <polygon points="65,12 105,35 106,89 65,118 24,89 25,37"
+                    fill="rgba(209,255,0,0.1)" stroke="rgba(209,255,0,0.6)" stroke-width="1.2"/>
+                  <circle cx="65" cy="12" r="2.5" fill="var(--acid)"/>
+                  <circle cx="105" cy="35" r="2.5" fill="var(--acid)"/>
+                  <circle cx="106" cy="89" r="2.5" fill="var(--acid)"/>
+                  <circle cx="65" cy="118" r="2.5" fill="var(--acid)"/>
+                  <circle cx="24" cy="89" r="2.5" fill="var(--acid)"/>
+                  <circle cx="25" cy="37" r="2.5" fill="var(--acid)"/>
+                </svg>
+              </div>
+              <div class="ui-detail-recommend">
+                <div class="ui-recommend-label">EXECUTIVE SUMMARY · РЕКОМЕНДАЦИЯ</div>
+                После разбора по всем осям — одна строка-вердикт и класс решения (recommend / review / reject). Кандидат демонстрирует высокую мотивацию и чёткую траекторию — к приоритетному рассмотрению.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SLIDE 8: TECH STACK ─── -->
+    <div class="slide" data-slide="7">
+      <div style="max-width:860px;width:100%">
+        <div class="section-divider fade-up-1">
+          <div class="section-divider-line"></div>
+          <span class="mono-label">07 / СТЕК И СХЕМА</span>
+          <div class="section-divider-line r"></div>
+        </div>
+        <div class="slide-title fade-up-2" style="margin-bottom:20px">Современный <span class="accent">стек</span></div>
+        <div class="stack-grid fade-up-3">
+          <div class="stack-card">
+            <div class="stack-card-accent" style="background:linear-gradient(90deg,var(--sky),transparent)"></div>
+            <div class="stack-layer" style="color:var(--sky)">FRONTEND</div>
+            <div class="stack-name" style="color:var(--sky)">React 19 + Vite 8</div>
+            <div class="stack-tags">
+              <span class="stack-tag">TypeScript</span>
+              <span class="stack-tag">Tailwind CSS</span>
+              <span class="stack-tag">Framer Motion</span>
+              <span class="stack-tag">react-i18next</span>
+              <span class="stack-tag">Axios</span>
+            </div>
+          </div>
+          <div class="stack-card">
+            <div class="stack-card-accent" style="background:linear-gradient(90deg,var(--purple),transparent)"></div>
+            <div class="stack-layer" style="color:var(--purple)">BACKEND</div>
+            <div class="stack-name" style="color:var(--purple)">FastAPI + Python</div>
+            <div class="stack-tags">
+              <span class="stack-tag">SQLAlchemy 2</span>
+              <span class="stack-tag">Pydantic</span>
+              <span class="stack-tag">Uvicorn</span>
+              <span class="stack-tag">httpx</span>
+            </div>
+          </div>
+          <div class="stack-card">
+            <div class="stack-card-accent" style="background:linear-gradient(90deg,var(--orange),transparent)"></div>
+            <div class="stack-layer" style="color:var(--orange)">AI LAYER</div>
+            <div class="stack-name" style="color:var(--orange)">Anthropic Claude</div>
+            <div class="stack-tags">
+              <span class="stack-tag">Claude + Whisper + TTS</span>
+              <span class="stack-tag">MediaPipe FaceLandmarker</span>
+              <span class="stack-tag">Multi-agent XAI</span>
+              <span class="stack-tag">Детектор AI-текста</span>
+            </div>
+          </div>
+          <div class="stack-card">
+            <div class="stack-card-accent" style="background:linear-gradient(90deg,var(--green),transparent)"></div>
+            <div class="stack-layer" style="color:var(--green)">DATABASE + I18N</div>
+            <div class="stack-name" style="color:var(--green)">SQLite · 3 языка</div>
+            <div class="lang-flags">
+              <span class="lang-badge">🇰🇿 KZ</span>
+              <span class="lang-badge">🇷🇺 RU</span>
+              <span class="lang-badge">🇬🇧 EN</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:18px;padding:14px 18px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);font-size:12px;color:rgba(255,255,255,0.45);line-height:1.55;text-align:center" class="fade-up-4">
+          Поток: <strong style="color:rgba(255,255,255,0.75)">кандидат / комиссия</strong> → React (Vite) → FastAPI <code style="font-size:10px">/api</code> → SQLite · JWT · Claude + OpenAI (Whisper / TTS) · документация <code style="font-size:10px">/docs</code>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SLIDE 9: ОГРАНИЧЕНИЯ И ЗАПУСК ─── -->
+    <div class="slide" data-slide="8">
+      <div style="max-width:900px;width:100%">
+        <div class="section-divider fade-up-1">
+          <div class="section-divider-line"></div>
+          <span class="mono-label">08 / ЧЕСТНОСТЬ И ДЕМО</span>
+          <div class="section-divider-line r"></div>
+        </div>
+        <div class="slide-title fade-up-2" style="margin-bottom:18px">Ограничения <span class="accent">MVP</span></div>
+        <div class="triple-row fade-up-3">
+          <div class="mini-panel" style="border-color:rgba(239,68,68,0.15)">
+            <div class="mini-panel-label" style="color:rgba(239,68,68,0.5)">ОГРАНИЧЕНИЯ</div>
+            <div class="mini-panel-body">Модель может ошибаться на коротких ответах · <strong style="color:rgba(255,255,255,0.55)">детектор и метрики взгляда — вероятностные сигналы</strong>, не доказательство · окончательная интерпретация всегда за комиссией · SQLite и <code style="font-size:9px">.env</code> для MVP — не прод без доработок (БД, секреты, HTTPS, ПДн)</div>
+          </div>
+          <div class="mini-panel" style="border-color:rgba(52,211,153,0.15)">
+            <div class="mini-panel-label" style="color:rgba(52,211,153,0.55)">ЗАПУСК</div>
+            <div class="mini-panel-body">Python 3.11+, Node 20+ · <code style="font-size:9px">backend/.env</code>: <strong style="color:rgba(255,255,255,0.65)">ANTHROPIC_API_KEY</strong> · live-интервью: <code style="font-size:9px">OPENAI_API_KEY</code> (Whisper + TTS) · опц. <code style="font-size:9px">DATABASE_URL</code> · Windows: <code style="font-size:9px">setup.ps1</code> / <code style="font-size:9px">start.ps1</code></div>
+          </div>
+          <div class="mini-panel" style="border-color:rgba(100,120,255,0.15)">
+            <div class="mini-panel-label" style="color:rgba(100,120,255,0.55)">ДЕМО КОМИССИИ</div>
+            <div class="mini-panel-body"><code style="font-size:9px">commission1@invisionu.kz</code> / <code style="font-size:9px">commission123</code> · <code style="font-size:9px">commission2@…</code> · <code style="font-size:9px">admin@invisionu.kz</code> / <code style="font-size:9px">admin123</code> — кандидаты через <code style="font-size:9px">/register</code></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── SLIDE 10: FINAL ─── -->
+    <div class="slide" data-slide="9">
+      <div class="s10-content">
+        <div class="section-divider fade-up-1">
+          <div class="section-divider-line"></div>
+          <span class="mono-label">09 / ИТОГ</span>
+          <div class="section-divider-line r"></div>
+        </div>
+        <div class="s10-quote fade-up-2">
+          "Мы не заменяем<br>комиссию. Мы даём ей<br><span>суперсилу.</span>"
+        </div>
+        <div class="roadmap-row fade-up-3">
+          <div class="roadmap-item" style="border-color:rgba(209,255,0,0.18);background:rgba(209,255,0,0.04)">
+            <div class="roadmap-status now">▶ СЕЙЧАС</div>
+            <div class="roadmap-item-title">MVP готов</div>
+            <div class="roadmap-item-desc">Готовое досье для жюри: мультимодальный сбор данных + <strong style="color:rgba(209,255,0,0.85)">XAI-карточка</strong> с разбором по осям и общим вердиктом. REST <code style="font-size:9px">/api</code>, OpenAPI, промпты агентов.</div>
+          </div>
+          <div class="roadmap-item" style="border-color:rgba(100,120,255,0.18);background:rgba(100,120,255,0.04)">
+            <div class="roadmap-status next">◆ ДАЛЕЕ</div>
+            <div class="roadmap-item-title">Backend-синхронизация</div>
+            <div class="roadmap-item-desc">Персистентные решения комиссии, аудит, роли и политики ПДн под прод</div>
+          </div>
+          <div class="roadmap-item" style="border-color:rgba(167,139,250,0.18);background:rgba(167,139,250,0.04)">
+            <div class="roadmap-status" style="color:var(--purple)">◆ БУДУЩЕЕ</div>
+            <div class="roadmap-item-title">Масштабирование</div>
+            <div class="roadmap-item-desc">Интеграции с вузовскими системами · мобильный клиент · кастомные веса и критерии под программу</div>
+          </div>
+        </div>
+        <div style="margin-top:24px;display:flex;align-items:center;justify-content:center;gap:12px" class="fade-up-4">
+          <div class="s1-hack-badge" style="border-color:rgba(209,255,0,0.2);background:rgba(209,255,0,0.06);color:rgba(209,255,0,0.8);font-family:'JetBrains Mono',monospace;font-size:11px;padding:8px 16px">
+            <div class="s1-hack-dot" style="background:var(--acid)"></div>
+            DECENTRATHON 5.0
+          </div>
+          <div class="s1-hack-badge" style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:8px 16px">
+            <div class="s1-hack-dot"></div>
+            AI INDRIVE TRACK
+          </div>
+          <div style="padding:8px 16px;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4);line-height:1.4;text-align:left">
+            README.md · frontend:dev :5173 · API :8000/docs
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /slides-wrap -->
+</div><!-- /app -->
+
+<script>
+  const TOTAL = 10;
+  let current = 0;
+  let isAnimating = false;
+
+  const slides = document.querySelectorAll('.slide');
+  const navBar = document.getElementById('navBar');
+  const counter = document.getElementById('slideCounter');
+
+  // Build nav dots
+  for (let i = 0; i < TOTAL; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'nav-dot' + (i === 0 ? ' active' : '');
+    dot.addEventListener('click', () => goTo(i));
+    navBar.appendChild(dot);
+  }
+
+  function updateUI() {
+    document.querySelectorAll('.nav-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+    counter.textContent = `${String(current + 1).padStart(2,'0')} / ${String(TOTAL).padStart(2,'0')}`;
+  }
+
+  function goTo(idx) {
+    if (isAnimating || idx === current || idx < 0 || idx >= TOTAL) return;
+    isAnimating = true;
+
+    const prev = slides[current];
+    const next = slides[idx];
+
+    prev.classList.add('exit');
+    prev.classList.remove('active');
+
+    setTimeout(() => {
+      prev.classList.remove('exit');
+      next.classList.add('active');
+      current = idx;
+      updateUI();
+      setTimeout(() => { isAnimating = false; }, 500);
+    }, 300);
+  }
+
+  function nextSlide() { goTo(current + 1); }
+  function prevSlide() { goTo(current - 1); }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
+  });
+
+  // Touch/swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) { dx < 0 ? nextSlide() : prevSlide(); }
+  });
+
+  // Init
+  slides[0].classList.add('active');
+  updateUI();
+</script>
+</body>
+</html>
