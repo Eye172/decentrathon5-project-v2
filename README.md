@@ -142,3 +142,8 @@ The candidate frontend and FastAPI backend run locally. Voice and model features
 This repository combines the project presentation and public implementation. Nurkhan’s companion showcase documents the same joint project and shared authorship.
 
 [Hackathon record and supporting sources](docs/showcase/docs/HACKATHON.md) · [Media provenance](docs/showcase/docs/MEDIA.md).
+
+
+---
+
+<sub>Account history: Magitcian172 → Eye172 (same developer). [Authorship note](AUTHORSHIP.md).</sub>
