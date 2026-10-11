@@ -1,0 +1,37 @@
+[
+  {
+    "file": "architecture.svg",
+    "bytes": 1721,
+    "sha256": "d818b82ae9478af9758b7fc14c0be80382c8a390544e4f8bf0671a54b8613784"
+  },
+  {
+    "file": "cover.svg",
+    "bytes": 936,
+    "sha256": "27060b23109bd9b10c043d1ceb668443c789d653f237429f049570abf42797fe"
+  },
+  {
+    "file": "interface.jpg",
+    "bytes": 28777,
+    "sha256": "ad232dad217dacf64814cf30c324bc3faa2f27f37bb6de71f67ed648725abe73"
+  },
+  {
+    "file": "invisionu-essay.png",
+    "bytes": 42676,
+    "sha256": "1191b6a4678209ac888d732c59e5b6d700b8c0618563dc0d6d3100eda42e2d9c"
+  },
+  {
+    "file": "invisionu-event.png",
+    "bytes": 37452,
+    "sha256": "f1fd14c02461e79fb49c79c543c74af1e9cebafe5e6d50ec02823ce9a2bda55e"
+  },
+  {
+    "file": "invisionu-profile.png",
+    "bytes": 44840,
+    "sha256": "a9c100dd7119d14089cfa3428756b79d5520663ce5f0a35bc85d4db7e81ca43f"
+  },
+  {
+    "file": "invisionu-timeline.png",
+    "bytes": 40607,
+    "sha256": "afe73dedb2cd32768f84dd84bf896b6213c2dc458c8ffcc2026aa082fcf44a16"
+  }
+]

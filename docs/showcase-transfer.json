@@ -1,0 +1,70 @@
+{
+  "from": "Eye172/invisionu-showcase",
+  "source_commit": "c5bf3aaf4291cb8dde7a8f54bb74f382d87da40b",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "55db45c68c12c801dfe85300f9cde86165bf218ca1d09415fdc523d3e9c4eef8"
+    },
+    {
+      "path": "README.md",
+      "sha256": "05042e3780ae4aab06e6000ec7eb49866edf5e3fa1e9bf0644e77532ca5739f2"
+    },
+    {
+      "path": "architecture.svg",
+      "sha256": "d818b82ae9478af9758b7fc14c0be80382c8a390544e4f8bf0671a54b8613784"
+    },
+    {
+      "path": "cover.svg",
+      "sha256": "27060b23109bd9b10c043d1ceb668443c789d653f237429f049570abf42797fe"
+    },
+    {
+      "path": "docs/HACKATHON.md",
+      "sha256": "75d4a578f03361b3059843ce577a1cff31b270bea64a78be7f19d190bd9744f6"
+    },
+    {
+      "path": "docs/MEDIA.md",
+      "sha256": "01fc75b0845aac2b8be46c79b82300185b8b13d7b24d509f9a89249493531e97"
+    },
+    {
+      "path": "docs/awards/README.md",
+      "sha256": "333ba03a276abec5dd75775ce16401468570b88bf089f0032e4808bcd536deab"
+    },
+    {
+      "path": "docs/awards/decentrathon5-participation.pdf",
+      "sha256": "1e1dbe1c9a79600b4b87dbc164250793de2b561a84f470b4930fb2a4e96befd3"
+    },
+    {
+      "path": "docs/awards/decentrathon5-participation.png",
+      "sha256": "ada24ac6764edc63a5362826e782942432b370599ebeed2d23cdd75de38a865e"
+    },
+    {
+      "path": "docs/awards/manifest.json",
+      "sha256": "e370009dee7eabd7dd9a4e55cee72a348d0820c0ae4bbec473cf8900b0fa4624"
+    },
+    {
+      "path": "docs/media-manifest.json",
+      "sha256": "b67e2c7dd72acd65e4edbd56e4e15d78d97c4a1f3b924ba9c2f35a5f00aea7c5"
+    },
+    {
+      "path": "interface.jpg",
+      "sha256": "ad232dad217dacf64814cf30c324bc3faa2f27f37bb6de71f67ed648725abe73"
+    },
+    {
+      "path": "invisionu-essay.png",
+      "sha256": "1191b6a4678209ac888d732c59e5b6d700b8c0618563dc0d6d3100eda42e2d9c"
+    },
+    {
+      "path": "invisionu-event.png",
+      "sha256": "f1fd14c02461e79fb49c79c543c74af1e9cebafe5e6d50ec02823ce9a2bda55e"
+    },
+    {
+      "path": "invisionu-profile.png",
+      "sha256": "a9c100dd7119d14089cfa3428756b79d5520663ce5f0a35bc85d4db7e81ca43f"
+    },
+    {
+      "path": "invisionu-timeline.png",
+      "sha256": "afe73dedb2cd32768f84dd84bf896b6213c2dc458c8ffcc2026aa082fcf44a16"
+    }
+  ]
+}
