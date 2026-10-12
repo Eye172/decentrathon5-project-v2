@@ -33,5 +33,30 @@
     "file": "invisionu-timeline.png",
     "bytes": 40607,
     "sha256": "afe73dedb2cd32768f84dd84bf896b6213c2dc458c8ffcc2026aa082fcf44a16"
+  },
+  {
+    "file": "media/demo-preview.jpg",
+    "bytes": 44085,
+    "sha256": "d158c4d656e2bb1ec592d815e95a79addcb69c9c106268d115a2e9e7652d700b"
+  },
+  {
+    "file": "media/invisionu-interface-tour.mp4",
+    "bytes": 341473,
+    "sha256": "93623535048cd5964e845d84d2bee51104e18c73960ff44cd260890bb75c2212"
+  },
+  {
+    "file": "media/invisionu-tour-essay.jpg",
+    "bytes": 50956,
+    "sha256": "d479269ebc11387ab9ac0a00d3a203e71fd1a765ab03de105c52ed2b1d1f334c"
+  },
+  {
+    "file": "media/invisionu-tour-event.jpg",
+    "bytes": 33289,
+    "sha256": "c271c680fe8545a86b25567060cdefcea5a8f383c8f2307f1a3da026de1bd983"
+  },
+  {
+    "file": "media/invisionu-tour-timeline.jpg",
+    "bytes": 48209,
+    "sha256": "2093ea328e33c8bc149c6ee0149980cd770cfff97f279204f2b9d75e21a9b349"
   }
 ]

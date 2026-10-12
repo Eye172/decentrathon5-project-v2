@@ -7,6 +7,19 @@ A candidate-selection prototype connecting an applicant journey with an anonymou
 
 *The first application stage, restored locally with a fictional Demo Applicant profile. No real applicant record is shown.*
 
+## Follow a fictional applicant through the forms
+
+[![A real local inVision U session with the explicitly fictional Demo Applicant profile.](media/demo-preview.jpg)](media/invisionu-interface-tour.mp4)
+
+**[▶ Open the 24-second interface walkthrough](media/invisionu-interface-tour.mp4)** ·
+[Technical guide and prototype boundaries](docs/TECHNICAL.md)
+
+Recorded on **12 October 2026**: profile → event editor → seven-event life map →
+focused-response prompt. Every personal detail and event is a written fictional
+fixture. No interview, assessment or real admissions decision is included.
+The prompt uses the retained deterministic fallback; the interface's AI label
+does not establish that a live provider call occurred.
+
 ## An application has a narrative
 
 Grades and a short essay rarely explain how someone approached a difficult experience. inVision U’s candidate flow includes a profile, a life timeline, an essay, situational-judgment tasks and a short live interview. The timeline includes difficult experiences as well as achievements, giving the later conversation more context.
@@ -97,8 +110,7 @@ It does not imply that the shown applicant completed a recorded interview or rec
 an assessment. The [public source repository](https://github.com/Eye172/decentrathon5-project-v2)
 contains the application, API, review workflow and local startup instructions. The
 implemented voice and assessment integrations require provider configuration to run.
-There is currently no published application video for this case study; the screenshots
-and source remain available independently of a live host.
+No original competition recording was found. The new, dated interface walkthrough above documents the candidate forms independently of a public host.
 
 ## Competition certificates
 
