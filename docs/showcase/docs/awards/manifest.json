@@ -11,5 +11,32 @@
       "bytes": 6410527,
       "preview_sha256": "ada24ac6764edc63a5362826e782942432b370599ebeed2d23cdd75de38a865e"
     }
-  ]
+  ],
+  "organizer_announcements": {
+    "supplied": "2026-10-12",
+    "source": "HackAlem Telegram channel; screenshots supplied by Shakhnazar Akhmer. Direct post URL and publication timestamp not supplied.",
+    "files": [
+      {
+        "original_filename": "codex-clipboard-6f8bc143-94f5-4088-85f1-183c699a3b33.png",
+        "file": "hackalem-finalists-announcement.png",
+        "description": "Screenshot of the HackAlem Telegram announcement identifying finalists of the inDrive track.",
+        "bytes": 612972,
+        "sha256": "c4c49772c86eacdce0b7ccb2408eb283f735c38881d7a18e60dfbedcda3cf045"
+      },
+      {
+        "original_filename": "codex-clipboard-2dd322e7-a73f-481e-b399-1379d0b81a15.png",
+        "file": "indrive-stage3-heading.png",
+        "description": "Announcement heading: finalist teams advancing to Stage 3.",
+        "bytes": 1682082,
+        "sha256": "e31b57da2b35f44d87b68849b315395a506060af17565e343182e3401fd3f2fa"
+      },
+      {
+        "original_filename": "codex-clipboard-ca8e1265-dc89-43dd-8319-0e0809fd2cd2.png",
+        "file": "indrive-finalists-qwertys.png",
+        "description": "Finalist roster with Qwertys in the middle column, seventh entry.",
+        "bytes": 1492859,
+        "sha256": "c13fda16c57906073f84d95ce4efa88424d36fbd5b9133349c014b28bfc21c30"
+      }
+    ]
+  }
 }

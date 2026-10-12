@@ -94,6 +94,8 @@ The screenshots show the working candidate forms with a clearly fictional local 
 
 ## Decentrathon 5.0: the inVision U case
 
+**Finalist — Decentrathon 5.0, AI inDrive track · Team QwertyS.** Selected for Stage 3, as announced by the organizers on the HackAlem Telegram channel. [Organizer announcement and finalist list](docs/showcase/docs/awards/README.md#organizer-announcement-finalist-selection).
+
 This project was built by **QwertyS** for **Decentrathon 5.0**, in the **AI inDrive
 track / inVision U case**, during **27 March–5 April 2026**. Astana Hub's event announcement
 identifies the organizers and partner tracks; the project's source records its own
@@ -114,11 +116,22 @@ contains the application, API, review workflow and local startup instructions. T
 implemented voice and assessment integrations require provider configuration to run.
 No original competition recording was found. The new, dated interface walkthrough above documents the candidate forms independently of a public host.
 
-## Competition certificates
+## Competition recognition
 
 **Participation in the AI inDrive track at Decentrathon 5.0**, **27 March–5 April 2026**. The certificate names Shakhnazar Akhmer and carries the inVision U / inDrive event branding.
 
 [Original documents and certificate gallery](docs/showcase/docs/awards/README.md).
+
+<details>
+<summary>View the organizer’s finalist announcement</summary>
+
+The announcement identifies teams advancing to Stage 3. **Qwertys** appears in the middle column of the roster, seventh entry.
+
+![inDrive finalists — teams advancing to Stage 3](docs/showcase/docs/awards/indrive-stage3-heading.png)
+
+![Organizer finalist list containing Qwertys](docs/showcase/docs/awards/indrive-finalists-qwertys.png)
+
+</details>
 
 <details>
 <summary>View the certificate</summary>
